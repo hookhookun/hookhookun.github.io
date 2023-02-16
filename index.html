@@ -1,6 +1,305 @@
 <!doctype html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Hookhoo</title>
-<ul>
-    <li><a href="https://twitter.com/hookhookun">Twitter: hookhookun</a></li>
-    <li><a href="https://github.com/hookhookun">GitHub: hookhookun</a></li>
-</ul>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        border-width: 1px;
+        box-sizing: border-box;
+        font: inherit;
+        color: inherit;
+        appearance: none;
+        border-style: none;
+        background-color: transparent;
+    }
+
+    a, button {
+        cursor: pointer;
+    }
+
+    :root {
+        block-size: 100%;
+        inline-size: 100%;
+        font-family: 'Segoe UI', Meiryo, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 16px;
+        --Gray0: #f8fafc;
+        --Gray1: #e2e8f0;
+        --Gray2: #cbd5e1;
+        --Gray3: #64748b;
+        --Gray4: #0f172a;
+        color: var(--Gray4);
+        background-color: var(--Gray1);
+        --Push:
+            0.1rem 0.1rem 0.2rem transparent,
+            -0.1rem -0.1rem 0.2rem transparent,
+            inset 0.1rem 0.1rem 0.2rem var(--Gray2),
+            inset -0.1rem -0.1rem 0.2rem var(--Gray0);
+        --Pull:
+            0.1rem 0.1rem 0.2rem var(--Gray2),
+            -0.1rem -0.1rem 0.2rem var(--Gray0);
+    }
+
+    body {
+        --gap: 2rem;
+        display: grid;
+        grid-auto-rows: max-content;
+        align-items: start;
+        justify-items: center;
+        min-block-size: 100%;
+        inline-size: 100%;
+        row-gap: var(--gap);
+        padding-block: var(--gap);
+    }
+
+    body>* {
+        inline-size: 94%;
+        max-inline-size: 40rem;
+    }
+
+    svg {
+        display: block;
+        inline-size: 2rem;
+        fill: currentColor;
+        stroke: none;
+        stroke-width: 1;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    header>h1 {
+        font-size: 200%;
+        font-weight: 800;
+    }
+
+    footer {
+        display: grid;
+        justify-content: end;
+    }
+
+    section {
+        --gap: 1.5rem;
+        display: grid;
+        grid-auto-flow: row;
+        grid-auto-rows: max-content;
+        row-gap: var(--gap);
+        column-gap: var(--gap);
+        padding: var(--gap);
+        border-radius: var(--gap);
+        box-shadow: var(--Push);
+    }
+
+    section>h1 {
+        font-size: 150%;
+        font-weight: 800;
+    }
+
+    .Account {
+        display: grid;
+        block-size: max-content;
+        grid-template-columns: max-content 1fr;
+        grid-template-rows: max-content 1fr;
+        text-decoration: none;
+        align-items: center;
+        justify-items: start;
+        column-gap: 0.5rem;
+        padding: 0.5rem;
+        padding-inline-end: 0.75rem;
+        border-radius: 0.5rem;
+        box-shadow: var(--Pull);
+        transition: box-shadow 500ms;
+        font-weight: 600;
+    }
+
+    .Account::before {
+        grid-row: 1 / 2;
+        grid-column: 2 / 3;
+        content: attr(data-host);
+        color: var(--Gray3);
+        font-size: 80%;
+    }
+
+    .Account:active {
+        transition: box-shadow 50ms;
+        box-shadow: var(--Push);
+    }
+
+    .Account>svg {
+        grid-row: 1 / 3;
+        grid-column: 1 / 2;
+        block-size: 2rem;
+        inline-size: 2rem;
+    }
+
+    .twitter-tweet-rendered {
+        justify-self: center;
+        display: flex;
+        inline-size: 100%;
+        max-inline-size: 32rem;
+    }
+
+    .twitter-tweet-rendered>iframe {
+        display: block;
+        inline-size: 100%;
+    }
+</style>
+<svg style="display:none">
+    <defs>
+        <path id="icon-niconico" stroke-width="2.9"
+            d="M45 9.1H30.6l5.9-5.6c.8-.7.9-2 0-2.9a2 2 0 0 0-2.8 0l-9 8.5-9-8.5a2 2 0 0 0-3 0 2 2 0 0 0 .2 3L18.8 9H4.4C2 9.1 0 11.1 0 13.5v26.6c0 2.4 2 4.4 4.4 4.4H10l3.3 3.9c.6.6 1.5.6 2 0l3.4-4h12l3.3 4c.6.6 1.5.6 2 0l3.4-4H45c2.4 0 4.4-1.9 4.4-4.3V13.5c0-2.4-2-4.4-4.4-4.4ZZ" />
+        <path id="icon-youtube"
+            d="M3 5m0 4a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4zM10 15l5 -3l-5 -3z" />
+        <path id="icon-twitter"
+            d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c0 -.249 1.51 -2.772 1.818 -4.013z" />
+        <g id="icon-github">
+            <path
+                d="M15 22v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+            <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3" fill="none" stroke="currentColor" />
+        </g>
+        <path id="icon-npm" stroke="none" fill="currentColor"
+            d="M240,250h100v-50h100V0H240V250z M340,50h50v100h-50V50z M480,0v200h100V50h50v150h50V50h50v150h50V0H480z M0,200h100V50h50v150h50V0H0V200z" />
+        <path id="icon-email"
+            d="M3 7l9 6l9 -6M3 5m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" fill="none"
+            stroke="currentColor" />
+    </defs>
+</svg>
+<header>
+    <h1>Hookhoo</h1>
+</header>
+<section id="Links">
+    <a class="Account" href="https://twitter.com/hookhookun" target="_blank" rel="noopener" data-host="twitter.com">
+        <svg viewBox="0 0 24 24">
+            <use href="#icon-twitter" />
+        </svg>
+        <span>hookhookun</span>
+    </a>
+    <a class="Account" href="https://www.nicovideo.jp/user/20109487" target="_blank" rel="noopener"
+        data-host="nicovideo.jp">
+        <svg viewBox="-10 -10 70 70">
+            <use href="#icon-niconico" />
+        </svg>
+        <span>20109487</span>
+    </a>
+    <a class="Account" href="https://www.youtube.com/@hookhookun" target="_blank" rel="noopener"
+        data-host="youtube.com">
+        <svg viewBox="0 0 24 24">
+            <use href="#icon-youtube" />
+        </svg>
+        <span>hookhookun</span>
+    </a>
+    <a class="Account" href="https://github.com/hookhookun" target="_blank" rel="noopener" data-host="github.com">
+        <svg viewBox="0 0 24 24">
+            <use href="#icon-github" />
+        </svg>
+        <span>hookhookun</span>
+    </a>
+    <a class="Account" href="https://www.npmjs.com/~hookun" target="_blank" rel="noopener" data-host="npmjs.com">
+        <svg viewBox="0 -320 800 800">
+            <use href="#icon-npm" />
+        </svg>
+        <span>hookun</span>
+    </a>
+    <button id="CopyEmail" class="Account" data-host="Click to Copy">
+        <svg viewBox="0 0 24 24">
+            <use href="#icon-email" />
+        </svg>
+        <span id="EmailAddress">hookhookun@gmail.com</span>
+    </button>
+</section>
+<section>
+    <script type="application/javascript" src="https://embed.nicovideo.jp/watch/sm41705400/script?w=640&h=360"></script>
+    <noscript><a href="https://www.nicovideo.jp/watch/sm41705400">【周央サンゴTAS】メイキング</a></noscript>
+</section>
+<section>
+    <script type="application/javascript" src="https://embed.nicovideo.jp/watch/sm41681320/script?w=640&h=360"></script>
+    <noscript><a href="https://www.nicovideo.jp/watch/sm41681320">【周央サンゴTAS】スーパーマリオブラザーズ2 時間遡行 13:39.50</a></noscript>
+</section>
+<section>
+    <script type="application/javascript" src="https://embed.nicovideo.jp/watch/sm39944397/script?w=640&h=360"></script>
+    <noscript><a href="https://www.nicovideo.jp/watch/sm39944397">鷹宮リオン/リオレウス倒したいの歌</a></noscript>
+</section>
+<section>
+    <blockquote class="twitter-tweet">
+        <p lang="qme" dir="ltr"><a
+                href="https://twitter.com/hashtag/%E3%81%84%E3%81%AC%E3%81%84%E3%82%89%E3%81%99%E3%81%A8?src=hash&amp;ref_src=twsrc%5Etfw">#いぬいらすと</a>
+            <a
+                href="https://twitter.com/hashtag/%E3%83%98%E3%83%AB%E7%B5%B5%E3%82%B9%E3%82%BF?src=hash&amp;ref_src=twsrc%5Etfw">#ヘル絵スタ</a>
+            <a
+                href="https://twitter.com/hashtag/%E7%B5%B5%E3%83%B3%E3%82%B8%E3%83%A5?src=hash&amp;ref_src=twsrc%5Etfw">#絵ンジュ</a>
+            <a href="https://t.co/XpnxLB73xf">pic.twitter.com/XpnxLB73xf</a>
+        </p>&mdash; ふうこう (@hookhookun) <a
+            href="https://twitter.com/hookhookun/status/1163519859805708288?ref_src=twsrc%5Etfw">August 19, 2019</a>
+    </blockquote>
+</section>
+<section>
+    <blockquote class="twitter-tweet">
+        <p lang="ja" dir="ltr">ハンカチで一芸<a
+                href="https://twitter.com/hashtag/%E3%82%8C%E3%81%AA%E3%81%AE%E9%B3%A5%E3%81%A3%E3%81%8F%E3%81%82%E3%83%BC%E3%81%A8?src=hash&amp;ref_src=twsrc%5Etfw">#れなの鳥っくあーと</a>
+            <a href="https://t.co/mtnnlJsTf2">pic.twitter.com/mtnnlJsTf2</a>
+        </p>&mdash; ふうこう (@hookhookun) <a
+            href="https://twitter.com/hookhookun/status/1162206608241205248?ref_src=twsrc%5Etfw">August 16, 2019</a>
+    </blockquote>
+</section>
+<section>
+    <blockquote class="twitter-tweet">
+        <p lang="ja" dir="ltr">アップしようとしたら配信に同じようなの出てきてびびった<a
+                href="https://twitter.com/hashtag/%E3%81%97%E3%81%84%E3%81%AA%E3%83%BC%E3%81%A8?src=hash&amp;ref_src=twsrc%5Etfw">#しいなーと</a>
+            <a href="https://t.co/XuEdWtYhwb">pic.twitter.com/XuEdWtYhwb</a>
+        </p>&mdash; ふうこう (@hookhookun) <a
+            href="https://twitter.com/hookhookun/status/1159428639596789760?ref_src=twsrc%5Etfw">August 8, 2019</a>
+    </blockquote>
+</section>
+<section>
+    <blockquote class="twitter-tweet">
+        <p lang="ja" dir="ltr">いってきます！の前<a
+                href="https://twitter.com/hashtag/%E8%88%9E%E9%88%B4%E3%82%AF%E3%83%A9%E3%83%95%E3%83%88?src=hash&amp;ref_src=twsrc%5Etfw">#舞鈴クラフト</a>
+            <a href="https://t.co/KMS4DRofpD">pic.twitter.com/KMS4DRofpD</a>
+        </p>&mdash; ふうこう (@hookhookun) <a
+            href="https://twitter.com/hookhookun/status/1157444989955084288?ref_src=twsrc%5Etfw">August 3, 2019</a>
+    </blockquote>
+</section>
+<footer>
+    © 2023 Hookhoo
+</footer>
+
+<script>
+    // @ts-check
+    document.addEventListener('DOMContentLoaded', () => {
+        for (const element of document.querySelectorAll('.twitter-tweet')) {
+            const section = element.parentElement;
+            const renderingObserver = new MutationObserver(() => {
+                const rendered = section.querySelector('.twitter-tweet-rendered');
+                if (rendered) {
+                    renderingObserver.disconnect();
+                    const clearStyle = () => rendered.removeAttribute('style');
+                    const styleObserver = new MutationObserver(clearStyle);
+                    styleObserver.observe(rendered, { attributes: true });
+                    clearStyle();
+                }
+            });
+            renderingObserver.observe(section, { childList: true });
+        }
+    });
+    {
+        /** @type {HTMLElement} */
+        const button = document.querySelector('#CopyEmail');
+        const span = button && button.querySelector('#EmailAddress');
+        if (button && span) {
+            const buttonText = button.dataset.host;
+            const emailAddress = span.textContent.trim();
+            /** @type {number | null} */
+            let timerId = null;
+            const durationMs = 1600;
+            button.addEventListener('click', () => {
+                button.dataset.host = 'Copied!';
+                navigator.clipboard.writeText(emailAddress);
+                clearTimeout(timerId);
+                timerId = setTimeout(() => {
+                    button.dataset.host = buttonText;
+                }, durationMs);
+            });
+        }
+    }
+</script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
